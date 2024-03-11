@@ -1,26 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { CommonService } from 'src/common/common.service';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
-  }
+  constructor(private readonly common: CommonService) {}
 
-  findAll() {
-    return `This action returns all auth`;
-  }
+  async create() {
+    try {
+      const read = await this.common
+        .readCsv()
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.error('Error reading CSV:', error);
+        });
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+      return read;
+    } catch (error) {
+      return { res: error, status: false, statusCode: 500, msg: 'error' };
+    }
   }
 }
