@@ -4,7 +4,6 @@ import { AppService } from './app.service';
 import { CommonService } from './common/common.service';
 import { AuthModule } from './auth/auth.module';
 import { Neo4jModule } from 'nest-neo4j/dist';
-import { Neo4jQueryModule } from './neo4j-query/neo4j-query.module';
 import { Neo4jQueryService } from './neo4j-query/neo4j-query.service';
 import { PostalModule } from './postal/postal.module';
 
@@ -18,7 +17,6 @@ import { PostalModule } from './postal/postal.module';
       username: 'neo4j',
       password: process.env.PASSWORD,
     }),
-    Neo4jQueryModule,
     PostalModule,
   ],
   controllers: [AppController],
