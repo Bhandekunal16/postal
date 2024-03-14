@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from '@nestjs/common';
-import { environment } from 'env/enviroment';
+import { environment } from 'src/env/enviroment';
 import * as fs from 'fs';
 import { Neo4jService } from 'nest-neo4j/dist';
 const csv = require('fast-csv');

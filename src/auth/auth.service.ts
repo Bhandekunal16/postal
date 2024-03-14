@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from '@nestjs/common';
-import { environment } from 'env/enviroment';
+import { environment } from 'src/env/enviroment';
 import { CommonService } from 'src/common/common.service';
 
 @Injectable()
