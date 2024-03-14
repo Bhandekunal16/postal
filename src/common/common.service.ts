@@ -101,4 +101,18 @@ export class CommonService {
   async isEqual(obj1, obj2) {
     return (await JSON.stringify(obj1)) === JSON.stringify(obj2);
   }
+
+  isValidKey(key) {
+    if (key === null || key === undefined) {
+      return false;
+    }
+
+    if (key.trim().length === 0) {
+      return false;
+    }
+
+    const pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
+
+    return pattern.test(key);
+  }
 }

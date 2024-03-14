@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PostalNeo4jService } from './postal-neo4j/postal-neo4j.service';
 import { Neo4jQueryService } from 'src/neo4j-query/neo4j-query.service';
+import { CommonService } from 'src/common/common.service';
 
 @Injectable()
 export class PostalService {
   constructor(
     private readonly neo: PostalNeo4jService,
     private readonly db: Neo4jQueryService,
+    private readonly common: CommonService,
   ) {}
 
   async allPostalList(): Promise<{
@@ -51,8 +53,27 @@ export class PostalService {
     status: boolean;
   }> {
     try {
-      const query = await this.neo.match('postal', property, value);
-      return query;
+      const isValidKey = this.common.isValidKey(property);
+      const isValidValue = this.common.isValidKey(value);
+
+      if (!isValidKey)
+        return {
+          res: 'please enter valid key',
+          status: false,
+          statusCode: 400,
+          msg: 'Bad Request',
+        };
+      else if (!isValidValue)
+        return {
+          res: 'please enter valid value',
+          status: false,
+          statusCode: 400,
+          msg: 'Bad Request',
+        };
+      else {
+        const query = await this.neo.match('postal', property, value);
+        return query;
+      }
     } catch (error) {
       return { res: error, status: false, statusCode: 500, msg: 'error' };
     }
