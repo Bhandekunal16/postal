@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
-import { search } from '../dto/serch.dto';
+import { search } from '../dto/search';
 
 @Injectable()
 export class PostalNeo4jService {

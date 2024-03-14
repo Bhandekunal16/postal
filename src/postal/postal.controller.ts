@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PostalService } from './postal.service';
-import { search } from './dto/serch.dto';
+import { search } from './dto/search';
 
 @Controller('postal')
 export class PostalController {

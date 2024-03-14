@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PostalNeo4jService } from './postal-neo4j/postal-neo4j.service';
 import { Neo4jQueryService } from 'src/neo4j-query/neo4j-query.service';
 import { CommonService } from 'src/common/common.service';
-import { search } from './dto/serch.dto';
+import { search } from './dto/search';
 
 @Injectable()
 export class PostalService {
