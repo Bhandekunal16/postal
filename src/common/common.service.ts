@@ -99,15 +99,20 @@ export class CommonService {
     return duplicates;
   }
 
-  async isEqual(obj1, obj2) {
-    return (await JSON.stringify(obj1)) === JSON.stringify(obj2);
+  /**
+   * @function isEqual is check both obj are same.
+   * @param {object} obj1 The string on which to perform the search.
+   * @param {object} obj2 The string on which to perform the search.
+   * @return {boolean} true || false*/
+  isEqual(obj1: object, obj2: object): boolean {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
 
   /**
    * @function isValidKey is string method for the checking entered string is valid.
    * @param {string} key The string on which to perform the search.
    * @return {boolean} true || false*/
-  isValidKey(key: string) {
+  isValidKey(key: string): boolean {
     if (key === null || key === undefined) {
       return false;
     }
@@ -125,7 +130,7 @@ export class CommonService {
    * @function hasSpaces is string method for the checking space between them.
    * @param {string} value any value to check
    * @return {boolean} true || false*/
-  hasSpaces(value: string) {
+  hasSpaces(value: string): boolean {
     const pattern = environment.hasSpace;
 
     return pattern.test(value);
