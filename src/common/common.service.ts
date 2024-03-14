@@ -53,13 +53,18 @@ export class CommonService {
     return { msg: 'process has been started.' };
   }
 
-  async count() {
+  async count(): Promise<{
+    data?: Array<object> | Array<undefined>;
+    res?: string;
+    status: boolean;
+    statusCode: number;
+    msg: string;
+  }> {
     try {
       const ans = await this.findDuplicateObjects();
-
       return { data: ans, status: true, statusCode: 200, msg: 'Success' };
     } catch (error) {
-      return error;
+      return { res: error, status: false, statusCode: 500, msg: 'Error' };
     }
   }
 
