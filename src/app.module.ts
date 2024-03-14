@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { CommonService } from './common/common.service';
 import { AuthModule } from './auth/auth.module';
 import { Neo4jModule } from 'nest-neo4j/dist';
+import { Neo4jQueryModule } from './neo4j-query/neo4j-query.module';
+import { Neo4jQueryService } from './neo4j-query/neo4j-query.service';
 
 @Module({
   imports: [
@@ -15,8 +17,9 @@ import { Neo4jModule } from 'nest-neo4j/dist';
       username: 'neo4j',
       password: process.env.PASSWORD,
     }),
+    Neo4jQueryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CommonService],
+  providers: [AppService, CommonService, Neo4jQueryService],
 })
 export class AppModule {}
