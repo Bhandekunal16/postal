@@ -39,4 +39,22 @@ export class PostalService {
       return { res: error, status: false, statusCode: 500, msg: 'error' };
     }
   }
+
+  async matchWithProperty(
+    property: string,
+    value: any,
+  ): Promise<{
+    msg: string;
+    data?: object;
+    res?: string;
+    statusCode: number;
+    status: boolean;
+  }> {
+    try {
+      const query = await this.neo.match('postal', property, value);
+      return query;
+    } catch (error) {
+      return { res: error, status: false, statusCode: 500, msg: 'error' };
+    }
+  }
 }

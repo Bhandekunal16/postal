@@ -42,4 +42,44 @@ export class PostalNeo4jService {
       };
     }
   }
+
+  async match(
+    node: string,
+    properties: string,
+    value: any,
+  ): Promise<{
+    msg: string;
+    data?: object | null;
+    res?: string;
+    statusCode: number;
+    status: boolean;
+  }> {
+    try {
+      const Query = await this.neo.read(
+        `MATCH (n:${node} {${properties}: $value}) RETURN collect(properties(n)) as response`,
+        { value },
+      );
+
+      return Query.records.length > 0
+        ? {
+            status: true,
+            data: Query.records[0].get('response'),
+            statusCode: 200,
+            msg: 'success',
+          }
+        : {
+            status: false,
+            data: null,
+            statusCode: 404,
+            msg: 'not ',
+          };
+    } catch (error) {
+      return {
+        res: error,
+        status: false,
+        msg: 'error',
+        statusCode: 500,
+      };
+    }
+  }
 }
