@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PostalService } from './postal.service';
+import { search } from './dto/serch.dto';
 
 @Controller('postal')
 export class PostalController {
@@ -21,5 +22,10 @@ export class PostalController {
     @Param('value') value: string,
   ) {
     return await this.postalService.matchWithProperty(property, value);
+  }
+
+  @Post('search')
+  async matchWithName(@Body() body: search) {
+    return await this.postalService.matchWithName(body);
   }
 }

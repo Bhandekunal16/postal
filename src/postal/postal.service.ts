@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PostalNeo4jService } from './postal-neo4j/postal-neo4j.service';
 import { Neo4jQueryService } from 'src/neo4j-query/neo4j-query.service';
 import { CommonService } from 'src/common/common.service';
+import { search } from './dto/serch.dto';
 
 @Injectable()
 export class PostalService {
@@ -76,6 +77,22 @@ export class PostalService {
         const query = await this.neo.match('postal', property, value);
         return query;
       }
+    } catch (error) {
+      return { res: error, status: false, statusCode: 500, msg: 'error' };
+    }
+  }
+
+  async matchWithName(body: search): Promise<{
+    msg: string;
+    data?: object | null;
+    count?: number | undefined;
+    res?: string;
+    statusCode: number;
+    status: boolean;
+  }> {
+    try {
+      const query = this.neo.name(body);
+      return query;
     } catch (error) {
       return { res: error, status: false, statusCode: 500, msg: 'error' };
     }
