@@ -55,6 +55,8 @@ export class PostalService {
     try {
       const isValidKey = this.common.isValidKey(property);
       const isValidValue = this.common.isValidKey(value);
+      const isHasSpace = this.common.hasSpaces(value);
+      const checkedValue = !isValidValue ? !isHasSpace : !isValidValue;
 
       if (!isValidKey)
         return {
@@ -63,7 +65,7 @@ export class PostalService {
           statusCode: 400,
           msg: 'Bad Request',
         };
-      else if (!isValidValue)
+      else if (checkedValue)
         return {
           res: 'please enter valid value',
           status: false,

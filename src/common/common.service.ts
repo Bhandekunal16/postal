@@ -115,4 +115,9 @@ export class CommonService {
 
     return pattern.test(key);
   }
+
+  hasSpaces(value) {
+    const pattern = /\s/;
+    return pattern.test(value);
+  }
 }
