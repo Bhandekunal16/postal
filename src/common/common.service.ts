@@ -105,9 +105,9 @@ export class CommonService {
 
   /**
    * @function isValidKey is string method for the checking entered string is valid.
-   * @param {any} key any value to check
+   * @param {string} key The string on which to perform the search.
    * @return {boolean} true || false*/
-  isValidKey(key: any) {
+  isValidKey(key: string) {
     if (key === null || key === undefined) {
       return false;
     }
