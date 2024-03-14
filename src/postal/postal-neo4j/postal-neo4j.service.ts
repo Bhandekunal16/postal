@@ -50,6 +50,7 @@ export class PostalNeo4jService {
   ): Promise<{
     msg: string;
     data?: object | null;
+    count?: number | undefined;
     res?: string;
     statusCode: number;
     status: boolean;
@@ -63,6 +64,7 @@ export class PostalNeo4jService {
       return Query.records.length > 0
         ? {
             status: true,
+            count: Query.records[0].get('response').length,
             data: Query.records[0].get('response'),
             statusCode: 200,
             msg: 'success',
