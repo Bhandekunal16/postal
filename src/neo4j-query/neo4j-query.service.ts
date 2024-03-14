@@ -3,7 +3,7 @@ import { Neo4jService } from 'nest-neo4j/dist';
 
 @Injectable()
 export class Neo4jQueryService {
-  constructor(private neo: Neo4jService) {}
+  constructor(private readonly neo: Neo4jService) {}
 
   async match(
     node: string,
