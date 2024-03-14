@@ -1,3 +1,3 @@
 export class search {
-  readonly value: string;
+  public readonly value: string;
 }
