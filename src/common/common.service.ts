@@ -103,7 +103,11 @@ export class CommonService {
     return (await JSON.stringify(obj1)) === JSON.stringify(obj2);
   }
 
-  isValidKey(key) {
+  /**
+   * @function isValidKey is string method for the checking entered string is valid.
+   * @param {any} key any value to check
+   * @return {boolean} true || false*/
+  isValidKey(key: any) {
     if (key === null || key === undefined) {
       return false;
     }
@@ -119,9 +123,9 @@ export class CommonService {
 
   /**
    * @function hasSpaces is string method for the checking space between them.
-   * @param {string} value any
+   * @param {string} value any value to check
    * @return {boolean} true || false*/
-  hasSpaces(value) {
+  hasSpaces(value: string) {
     const pattern = environment.hasSpace;
 
     return pattern.test(value);
