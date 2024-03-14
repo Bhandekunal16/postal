@@ -268,7 +268,7 @@ export class Neo4jQueryService {
 
       return Query.records.length > 0
         ? {
-            data: Query.records[0].get('COUNT(n)'),
+            data: Query.records[0].get('COUNT(n)').low,
             status: true,
             statusCode: 200,
             msg: 'SUCCESS',

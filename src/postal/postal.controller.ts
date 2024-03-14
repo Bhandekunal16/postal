@@ -9,4 +9,9 @@ export class PostalController {
   async allPostalList() {
     return await this.postalService.allPostalList();
   }
+
+  @Get('count')
+  async count() {
+    return await this.postalService.count();
+  }
 }
