@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Injectable } from '@nestjs/common';
+import { environment } from 'env/enviroment';
 import * as fs from 'fs';
 import { Neo4jService } from 'nest-neo4j/dist';
 const csv = require('fast-csv');
@@ -111,13 +112,19 @@ export class CommonService {
       return false;
     }
 
-    const pattern = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+$/;
+    const pattern = environment.validString;
 
     return pattern.test(key);
   }
 
+  /**
+   * @function hasSpaces is string method for the checking space between them.
+   * @param {string} value any
+   * @return {boolean} true || false*/
   hasSpaces(value) {
-    const pattern = /\s/;
+    /** @type {RegExp}*/
+    const pattern = environment.hasSpace;
+
     return pattern.test(value);
   }
 }
