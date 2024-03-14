@@ -7,7 +7,7 @@ const csv = require('fast-csv');
 
 @Injectable()
 export class CommonService {
-  constructor(readonly neo: Neo4jService) {}
+  constructor(private readonly neo: Neo4jService) {}
 
   async readCsv() {
     const path = 'src/pinCode.csv';
@@ -21,11 +21,9 @@ export class CommonService {
         jsonData.push(row);
       })
       .on('end', async (rowCount) => {
-        console.log(`Parsed ${rowCount} rows`);
-
         const batchSize = 850;
         const batches = [];
-        const startIndex = 141901;
+        const startIndex = 0;
 
         for (let i = startIndex; i < jsonData.length; i += batchSize) {
           batches.push(jsonData.slice(i, i + batchSize));
@@ -51,14 +49,15 @@ export class CommonService {
           );
         }
       });
+
+    return { msg: 'process has been started.' };
   }
 
   async count() {
     try {
-      console.log('i am start counting.');
       const ans = await this.findDuplicateObjects();
-      console.log('i am trying...', ans.length);
-      return ans;
+
+      return { data: ans, status: true, statusCode: 200, msg: 'Success' };
     } catch (error) {
       return error;
     }
@@ -66,6 +65,7 @@ export class CommonService {
 
   async findDuplicateObjects() {
     const duplicates = [];
+
     const list = await this.neo.read(
       `MATCH (node:postal)
       RETURN node ORDER BY id(node) ASC`,
@@ -76,8 +76,6 @@ export class CommonService {
       return properties;
     });
 
-    console.log(arr.length);
-
     arr.forEach(async (obj, index) => {
       let isDuplicate = false;
       for (let i = index + 1; i < arr.length; i++) {
@@ -86,16 +84,16 @@ export class CommonService {
           break;
         }
       }
+
       if (isDuplicate) {
         duplicates.push(obj);
-        console.log(duplicates.length);
       }
     });
 
     return duplicates;
   }
 
-  isEqual(obj1, obj2) {
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  async isEqual(obj1, obj2) {
+    return (await JSON.stringify(obj1)) === JSON.stringify(obj2);
   }
 }
