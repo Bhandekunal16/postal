@@ -122,7 +122,6 @@ export class CommonService {
    * @param {string} value any
    * @return {boolean} true || false*/
   hasSpaces(value) {
-    /** @type {RegExp}*/
     const pattern = environment.hasSpace;
 
     return pattern.test(value);
