@@ -127,4 +127,47 @@ export class PostalNeo4jService {
       };
     }
   }
+
+  async stateWiseCount(): Promise<{
+    length?: number;
+    data?: Array<object> | null;
+    res?: string;
+    status: boolean;
+    statusCode: number;
+    msg: string;
+  }> {
+    try {
+      const Query = await this.neo.read(
+        `MATCH (n:postal)
+        WITH n.StateName AS StateName, COUNT(n) AS Count
+        RETURN StateName, Count`,
+      );
+      const data = Query.records.map((elem) => ({
+        name: elem.get('StateName'),
+        count: elem.get('Count').low,
+      }));
+
+      return Query.records.length > 0
+        ? {
+            length: Query.records.length,
+            data: data,
+            status: true,
+            statusCode: 200,
+            msg: 'success',
+          }
+        : {
+            data: null,
+            status: false,
+            statusCode: 404,
+            msg: 'not found',
+          };
+    } catch (error) {
+      return {
+        res: error,
+        status: false,
+        msg: 'error',
+        statusCode: 500,
+      };
+    }
+  }
 }

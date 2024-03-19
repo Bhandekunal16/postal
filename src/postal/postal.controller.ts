@@ -16,6 +16,11 @@ export class PostalController {
     return await this.postalService.count();
   }
 
+  @Get('count/state')
+  async stateWiseCount() {
+    return await this.postalService.stateWiseCount();
+  }
+
   @Get('getall/:property/:value')
   async matchWithProperty(
     @Param('property') property: string,

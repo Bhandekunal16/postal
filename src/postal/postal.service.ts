@@ -97,4 +97,27 @@ export class PostalService {
       return { res: error, status: false, statusCode: 500, msg: 'error' };
     }
   }
+
+  async stateWiseCount(): Promise<{
+    length?: number | string | null;
+    data?: Array<object> | null;
+    res?: string;
+    status: boolean;
+    statusCode: number;
+    msg: string;
+  }> {
+    try {
+      const query = await this.neo.stateWiseCount();
+      const query2 = await this.db.count('postal');
+      return {
+        length: query2.data,
+        data: query.data,
+        status: query.status,
+        statusCode: query.statusCode,
+        msg: query.msg,
+      };
+    } catch (error) {
+      return { res: error, status: false, statusCode: 500, msg: 'error' };
+    }
+  }
 }
