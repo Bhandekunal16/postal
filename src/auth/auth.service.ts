@@ -11,7 +11,7 @@ export class AuthService {
     try {
       const access = environment.ACCESSKEY;
       return key == access
-        ? await this.common.readCsv()
+        ? await this.common.readCsv2()
         : {
             res: 'accesskey mismatch',
             status: false,

@@ -6,6 +6,8 @@ import { AuthModule } from './auth/auth.module';
 import { Neo4jModule } from 'nest-neo4j/dist';
 import { Neo4jQueryService } from './neo4j-query/neo4j-query.service';
 import { PostalModule } from './postal/postal.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { MongoService } from './mongo/mongo.service';
 
 @Module({
   imports: [
@@ -17,9 +19,12 @@ import { PostalModule } from './postal/postal.module';
       username: 'neo4j',
       password: process.env.PASSWORD,
     }),
+    MongooseModule.forRoot(
+      'mongodb+srv://bhandekunal16:SppcHRFdBS74An8v@cluster0.xxevqv7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    ),
     PostalModule,
   ],
   controllers: [AppController],
-  providers: [AppService, CommonService, Neo4jQueryService],
+  providers: [AppService, Neo4jQueryService, MongoService],
 })
 export class AppModule {}

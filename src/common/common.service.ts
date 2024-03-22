@@ -4,11 +4,19 @@ import { Injectable } from '@nestjs/common';
 import { environment } from 'src/env/enviroment';
 import * as fs from 'fs';
 import { Neo4jService } from 'nest-neo4j/dist';
+import { InjectModel } from '@nestjs/mongoose';
+import { POSTAL } from 'src/mongo/mongo.service';
+import { Model } from 'mongoose';
+import { Postal } from 'src/mongo/postal.dto';
+import { throwError } from 'rxjs';
 const csv = require('fast-csv');
 
 @Injectable()
 export class CommonService {
-  constructor(private readonly neo: Neo4jService) {}
+  constructor(
+    private readonly neo: Neo4jService,
+    @InjectModel('POST') private readonly postModel: Model<POSTAL>,
+  ) {}
 
   async readCsv() {
     const path = 'src/pinCode.csv';
@@ -134,5 +142,32 @@ export class CommonService {
     const pattern = environment.hasSpace;
 
     return pattern.test(value);
+  }
+
+  async readCsv2() {
+    const path = 'src/pinCode.csv';
+    const jsonData = [];
+    const stream = fs.createReadStream(path);
+
+    csv
+      .parseStream(stream, { headers: true })
+      .on('error', (error) => console.error(error))
+      .on('data', (row) => {
+        jsonData.push(row);
+      })
+      .on('end', async (rowCount) => {
+        console.log(rowCount);
+
+        for (let index = 0; index < jsonData.length; index++) {
+          try {
+            const create = new this.postModel(jsonData[index]);
+            await create.save();
+          } catch (error) {
+            throw error;
+          }
+        }
+      });
+
+    return { msg: 'process has been started.' };
   }
 }
