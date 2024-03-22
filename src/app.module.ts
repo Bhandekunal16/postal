@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CommonService } from './common/common.service';
 import { AuthModule } from './auth/auth.module';
 import { Neo4jModule } from 'nest-neo4j/dist';
 import { Neo4jQueryService } from './neo4j-query/neo4j-query.service';
