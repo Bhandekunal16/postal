@@ -3,6 +3,9 @@ import { PostalNeo4jService } from './postal-neo4j/postal-neo4j.service';
 import { Neo4jQueryService } from 'src/neo4j-query/neo4j-query.service';
 import { CommonService } from 'src/common/common.service';
 import { search } from './dto/search';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { POSTAL } from 'src/mongo/mongo.service';
 
 @Injectable()
 export class PostalService {
@@ -10,6 +13,7 @@ export class PostalService {
     private readonly neo: PostalNeo4jService,
     private readonly db: Neo4jQueryService,
     private readonly common: CommonService,
+    @InjectModel('POST') private readonly postModel: Model<POSTAL>,
   ) {}
 
   async allPostalList(): Promise<{
@@ -21,8 +25,21 @@ export class PostalService {
     msg: string;
   }> {
     try {
-      const query = await this.neo.matchNode(300);
+      const query = await this.neo.matchNode(150000);
       return query;
+    } catch (error) {
+      return { res: error, status: false, statusCode: 500, msg: 'error' };
+    }
+  }
+
+  async allPostalList2(): Promise<any> {
+    try {
+      const model: Model<POSTAL> = this.postModel as Model<POSTAL>;
+      const result = await model.find();
+      return result.length > 0
+        ? { data: result, status: true, statusCode: 200, msg: 'success' }
+        : { data: null, status: false, statusCode: 404, msg: 'failed' };
+      return result;
     } catch (error) {
       return { res: error, status: false, statusCode: 500, msg: 'error' };
     }
