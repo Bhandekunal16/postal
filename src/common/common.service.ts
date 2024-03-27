@@ -60,10 +60,6 @@ export class CommonService {
         }
       });
     return { msg: 'process has been started.' };
-
-    // if (rowCount == batches.length) {
-    //   return { msg: 'process has been started.' };
-    // }
   }
 
   async count(): Promise<{
