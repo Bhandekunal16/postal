@@ -33,33 +33,37 @@ export class CommonService {
         const batchSize = 850;
         const batches = [];
         const startIndex = 0;
+        console.log(rowCount);
 
         for (let i = startIndex; i < jsonData.length; i += batchSize) {
           batches.push(jsonData.slice(i, i + batchSize));
         }
 
         for (const batch of batches) {
+          console.log(batches);
           await this.neo.write(
             `UNWIND $data as row
-            MERGE (u:postal{id:apoc.create.uuid()})
-            ON CREATE SET u += {  CircleName: row.CircleName,
-                                  RegionName: row.RegionName,
-                                  DivisionName: row.DivisionName,
-                                  OfficeName: row.OfficeName,
-                                  Pincode: row.Pincode,
-                                  OfficeType: row.OfficeType,
-                                  Delivery: row.Delivery,
-                                  District: row.District,
-                                  StateName: row.StateName,
-                                  Latitude: row.Latitude,
-                                  Longitude: row.Longitude
-                                }`,
+            MERGE (u:postal { CircleName: row.CircleName,
+                              RegionName: row.RegionName,
+                              DivisionName: row.DivisionName,
+                              OfficeName: row.OfficeName,
+                              Pincode: row.Pincode,
+                              OfficeType: row.OfficeType,
+                              Delivery: row.Delivery,
+                              District: row.District,
+                              StateName: row.StateName,
+                              Latitude: row.Latitude,
+                              Longitude: row.Longitude
+                            })`,
             { data: batch },
           );
         }
       });
-
     return { msg: 'process has been started.' };
+
+    // if (rowCount == batches.length) {
+    //   return { msg: 'process has been started.' };
+    // }
   }
 
   async count(): Promise<{
