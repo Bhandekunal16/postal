@@ -32,7 +32,6 @@ export class PostalService {
       return result.length > 0
         ? { data: result, status: true, statusCode: 200, msg: 'success' }
         : { data: null, status: false, statusCode: 404, msg: 'failed' };
-      return result;
     } catch (error) {
       throw new Error(error);
     }
