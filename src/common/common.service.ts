@@ -7,8 +7,6 @@ import { Neo4jService } from 'nest-neo4j/dist';
 import { InjectModel } from '@nestjs/mongoose';
 import { POSTAL } from 'src/mongo/mongo.service';
 import { Model } from 'mongoose';
-import { Postal } from 'src/mongo/postal.dto';
-import { throwError } from 'rxjs';
 const csv = require('fast-csv');
 
 @Injectable()
