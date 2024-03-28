@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { environment } from 'src/env/enviroment';
 import { CommonService } from 'src/common/common.service';
 
@@ -12,12 +12,7 @@ export class AuthService {
       const access = environment.ACCESSKEY;
       return key == access
         ? await this.common.readCsv()
-        : {
-            res: 'accesskey mismatch',
-            status: false,
-            statusCode: 404,
-            msg: 'error',
-          };
+        : new BadRequestException('invalid access key');
     } catch (error) {
       throw new Error(error);
     }
