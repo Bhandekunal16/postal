@@ -28,7 +28,7 @@ export class PostalService {
       const query = await this.neo.matchNode(150000);
       return query;
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -41,7 +41,7 @@ export class PostalService {
         : { data: null, status: false, statusCode: 404, msg: 'failed' };
       return result;
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -56,7 +56,7 @@ export class PostalService {
       const query = await this.db.count('postal');
       return query;
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -95,7 +95,7 @@ export class PostalService {
         return query;
       }
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -111,7 +111,7 @@ export class PostalService {
       const query = this.neo.name(body);
       return query;
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -134,7 +134,7 @@ export class PostalService {
         msg: query.msg,
       };
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 }

@@ -19,7 +19,7 @@ export class AuthService {
             msg: 'error',
           };
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 
@@ -27,7 +27,7 @@ export class AuthService {
     try {
       return await this.common.count();
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'error' };
+      throw new Error(error);
     }
   }
 }

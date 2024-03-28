@@ -73,7 +73,7 @@ export class CommonService {
       const ans = await this.findDuplicateObjects();
       return { data: ans, status: true, statusCode: 200, msg: 'Success' };
     } catch (error) {
-      return { res: error, status: false, statusCode: 500, msg: 'Error' };
+      throw new Error(error);
     }
   }
 
