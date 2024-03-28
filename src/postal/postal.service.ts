@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PostalNeo4jService } from './postal-neo4j/postal-neo4j.service';
 import { Neo4jQueryService } from 'src/neo4j-query/neo4j-query.service';
 import { CommonService } from 'src/common/common.service';
@@ -16,14 +16,7 @@ export class PostalService {
     @InjectModel('POST') private readonly postModel: Model<POSTAL>,
   ) {}
 
-  async allPostalList(): Promise<{
-    length?: number;
-    data?: object[];
-    res?: string;
-    status: boolean;
-    statusCode: number;
-    msg: string;
-  }> {
+  async allPostalList() {
     try {
       const query = await this.neo.matchNode(150000);
       return query;
@@ -60,36 +53,16 @@ export class PostalService {
     }
   }
 
-  async matchWithProperty(
-    property: string,
-    value: any,
-  ): Promise<{
-    msg: string;
-    data?: object;
-    res?: string;
-    statusCode: number;
-    status: boolean;
-  }> {
+  async matchWithProperty(property: string, value: any) {
     try {
       const isValidKey = this.common.isValidKey(property);
       const isValidValue = this.common.isValidKey(value);
       const isHasSpace = this.common.hasSpaces(value);
       const checkedValue = !isValidValue ? !isHasSpace : !isValidValue;
 
-      if (!isValidKey)
-        return {
-          res: 'please enter valid key',
-          status: false,
-          statusCode: 400,
-          msg: 'Bad Request',
-        };
+      if (!isValidKey) return new BadRequestException('please enter valid key');
       else if (checkedValue)
-        return {
-          res: 'please enter valid value',
-          status: false,
-          statusCode: 400,
-          msg: 'Bad Request',
-        };
+        return new BadRequestException('please enter valid value');
       else {
         const query = await this.neo.match('postal', property, value);
         return query;
@@ -99,14 +72,7 @@ export class PostalService {
     }
   }
 
-  async matchWithName(body: search): Promise<{
-    msg: string;
-    data?: object | null;
-    count?: number | undefined;
-    res?: string;
-    statusCode: number;
-    status: boolean;
-  }> {
+  async matchWithName(body: search) {
     try {
       const query = this.neo.name(body);
       return query;
@@ -115,14 +81,7 @@ export class PostalService {
     }
   }
 
-  async stateWiseCount(): Promise<{
-    length?: number | string | null;
-    data?: Array<object> | null;
-    res?: string;
-    status: boolean;
-    statusCode: number;
-    msg: string;
-  }> {
+  async stateWiseCount(): Promise<any> {
     try {
       const query = await this.neo.stateWiseCount();
       const query2 = await this.db.count('postal');

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Neo4jService } from 'nest-neo4j/dist';
 import { search } from '../dto/search';
 
@@ -6,14 +6,7 @@ import { search } from '../dto/search';
 export class PostalNeo4jService {
   constructor(private readonly neo: Neo4jService) {}
 
-  async matchNode(limit: number): Promise<{
-    length?: number;
-    data?: Array<object> | null;
-    res?: string;
-    status: boolean;
-    statusCode: number;
-    msg: string;
-  }> {
+  async matchNode(limit: number) {
     try {
       const Query = await this.neo.read(
         `MATCH (n:postal) return n limit ${limit}`,
@@ -28,12 +21,7 @@ export class PostalNeo4jService {
             statusCode: 200,
             msg: 'success',
           }
-        : {
-            data: null,
-            status: false,
-            statusCode: 404,
-            msg: 'not found',
-          };
+        : new NotFoundException('not found');
     } catch (error) {
       return {
         res: error,
@@ -44,18 +32,7 @@ export class PostalNeo4jService {
     }
   }
 
-  async match(
-    node: string,
-    properties: string,
-    value: any,
-  ): Promise<{
-    msg: string;
-    data?: object | null;
-    count?: number | undefined;
-    res?: string;
-    statusCode: number;
-    status: boolean;
-  }> {
+  async match(node: string, properties: string, value: any) {
     try {
       const Query = await this.neo.read(
         `MATCH (n:${node} {${properties}: $value}) RETURN collect(properties(n)) as response`,
@@ -70,12 +47,7 @@ export class PostalNeo4jService {
             statusCode: 200,
             msg: 'success',
           }
-        : {
-            status: false,
-            data: null,
-            statusCode: 404,
-            msg: 'not ',
-          };
+        : new NotFoundException('not found');
     } catch (error) {
       return {
         res: error,
@@ -86,14 +58,7 @@ export class PostalNeo4jService {
     }
   }
 
-  async name(body: search): Promise<{
-    msg: string;
-    data?: object | null;
-    count?: number | undefined;
-    res?: string;
-    statusCode: number;
-    status: boolean;
-  }> {
+  async name(body: search) {
     try {
       const Query = await this.neo.read(`
       MATCH (u:postal)
@@ -112,12 +77,7 @@ export class PostalNeo4jService {
             statusCode: 200,
             msg: 'success',
           }
-        : {
-            status: false,
-            data: null,
-            statusCode: 404,
-            msg: 'not ',
-          };
+        : new NotFoundException('not found');
     } catch (error) {
       return {
         res: error,
